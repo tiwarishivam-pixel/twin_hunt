@@ -41,8 +41,8 @@ class _MyhomepageState extends State<Myhomepage> {
             child: Text(
               'Twin Hunt',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 48,
+                  color: const Color.fromARGB(255, 5, 5, 5),
+                  fontSize: 50,
                   fontWeight: FontWeight.bold),
             ),
           ),
