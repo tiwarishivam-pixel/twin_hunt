@@ -16,7 +16,14 @@ class Game {
   List<Map<int, String>> matchcheck = [];
 
   int cardcount = 8;
+
   void initGame() {
+    card_list.shuffle(); // Shuffle cards at the start of the game.
     gameImg = List.generate(cardcount, (index) => hiddencardpath);
+    matchcheck.clear();
+  }
+
+  void resetGame() {
+    initGame();
   }
 }

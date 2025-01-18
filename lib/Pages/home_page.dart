@@ -20,6 +20,14 @@ class _MyhomepageState extends State<Myhomepage> {
     _game.initGame();
   }
 
+  void restartGame() {
+    setState(() {
+      tries = 0;
+      score = 0;
+      _game.resetGame();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -38,9 +46,7 @@ class _MyhomepageState extends State<Myhomepage> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(
-            height: 24,
-          ),
+          SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,6 +54,21 @@ class _MyhomepageState extends State<Myhomepage> {
               scoreboard('tries', tries.toString()),
               scoreboard('score', score.toString()),
             ],
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: restartGame,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(
+              'Restart',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ),
           SizedBox(
             height: screenWidth,
@@ -63,7 +84,6 @@ class _MyhomepageState extends State<Myhomepage> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap: () {
-                        print(_game.card_list[index]);
                         setState(() {
                           tries++;
                           _game.gameImg![index] = _game.card_list[index];
@@ -72,11 +92,12 @@ class _MyhomepageState extends State<Myhomepage> {
                         if (_game.matchcheck.length == 2) {
                           if (_game.matchcheck[0].values.first ==
                               _game.matchcheck[1].values.first) {
-                            score += 100;
-                            _game.matchcheck.clear();
+                            setState(() {
+                              score += 100;
+                              _game.matchcheck.clear();
+                            });
                           } else {
                             Future.delayed(Duration(milliseconds: 500), () {
-                              print(_game.gameImg);
                               setState(() {
                                 _game.gameImg![_game.matchcheck[0].keys.first] =
                                     _game.hiddencardpath;
@@ -91,28 +112,18 @@ class _MyhomepageState extends State<Myhomepage> {
                       child: Container(
                         padding: EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
-                            color: Color(0xFFFFB46A),
-                            borderRadius: BorderRadius.circular(8.0),
-                            image: DecorationImage(
-                              image: AssetImage(_game.gameImg![index]),
-                              fit: BoxFit.cover,
-                            )),
+                          color: Color(0xFFFFB46A),
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: DecorationImage(
+                            image: AssetImage(_game.gameImg![index]),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ));
                 }),
           ),
         ],
       ),
     );
-  }
-}
-
-class gestureDetector extends StatelessWidget {
-  const gestureDetector({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
