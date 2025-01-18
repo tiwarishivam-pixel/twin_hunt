@@ -11,6 +11,8 @@ class Myhomepage extends StatefulWidget {
 
 class _MyhomepageState extends State<Myhomepage> {
   final Game _game = Game();
+  int tries = 0;
+  int score = 0;
 
   @override
   void initState() {
@@ -43,8 +45,8 @@ class _MyhomepageState extends State<Myhomepage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              scoreboard('tries', '0'),
-              scoreboard('score', '0'),
+              scoreboard('tries', tries.toString()),
+              scoreboard('score', score.toString()),
             ],
           ),
           SizedBox(
@@ -61,7 +63,30 @@ class _MyhomepageState extends State<Myhomepage> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap: () {
-                        print(_game.gameImg![index]);
+                        print(_game.card_list[index]);
+                        setState(() {
+                          tries++;
+                          _game.gameImg![index] = _game.card_list[index];
+                          _game.matchcheck.add({index: _game.card_list[index]});
+                        });
+                        if (_game.matchcheck.length == 2) {
+                          if (_game.matchcheck[0].values.first ==
+                              _game.matchcheck[1].values.first) {
+                            score += 100;
+                            _game.matchcheck.clear();
+                          } else {
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              print(_game.gameImg);
+                              setState(() {
+                                _game.gameImg![_game.matchcheck[0].keys.first] =
+                                    _game.hiddencardpath;
+                                _game.gameImg![_game.matchcheck[1].keys.first] =
+                                    _game.hiddencardpath;
+                                _game.matchcheck.clear();
+                              });
+                            });
+                          }
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(16.0),

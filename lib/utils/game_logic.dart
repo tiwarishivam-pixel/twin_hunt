@@ -2,7 +2,7 @@ class Game {
   final String hiddencardpath = 'assets/images/front.jpg';
   List<String>? gameImg;
 
-  final List<String> imgList = [
+  final List<String> card_list = [
     'assets/images/black_heart.jpeg',
     'assets/images/circle.jpeg',
     'assets/images/question.png',
